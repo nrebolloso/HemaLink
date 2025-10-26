@@ -1,62 +1,48 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import AuthLinks from './AuthLinks';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { SignInButton, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
 export default function Header() {
-  const pathname = usePathname();
-  const isHomePage = pathname === '/';
+	return (
+		<header className="fixed top-0 left-0 right-0 z-50">
+			<div className="mx-auto max-w-7xl px-6">
+				<div className="flex items-center justify-between rounded-lg border border-red-800/20 bg-black/40 px-4 py-3 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.6)] shadow-[0_0_20px_rgba(255,0,60,0.25)]">
+					<Link href="/" className="flex items-center gap-3">
+						<span className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-700">
+							HemaLink
+						</span>
+					</Link>
 
-  //creates correct link
-  const getHref = (id: string) => {
-    return isHomePage ? `#${id}` : `/#${id}`;
-  };
+					<nav className="hidden gap-6 md:flex">
+						<a href="#home" className="text-sm text-white/85 hover:text-red-400">
+							Home
+						</a>
+						<a href="#about" className="text-sm text-white/85 hover:text-red-400">
+							About
+						</a>
+						<a href="#how-it-works" className="text-sm text-white/85 hover:text-red-400">
+							How it works
+						</a>
+					</nav>
 
-  return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-700 bg-[var(--background)]">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-4">
-        {/* logo */}
-        <div className="flex-shrink-0">
-          <Link
-            href={getHref('home')}
-            className="text-lg font-bold text-[var(--foreground)]"
-          >
-            HemaLink
-          </Link>
-        </div>
-
-        {/* nav */}
-        <div className="hidden md:flex md:items-center md:gap-6">
-          <Link
-            href={getHref('home')}
-            className="text-sm text-gray-400 hover:text-gray-200"
-          >
-            Home
-          </Link>
-          <Link
-            href={getHref('about')}
-            className="text-sm text-gray-400 hover:text-gray-200"
-          >
-            About
-          </Link>
-          <Link
-            href={getHref('how-it-works')}
-            className="text-sm text-gray-400 hover:text-gray-200"
-          >
-            How It Works
-          </Link>
-          <Link
-            href={getHref('pricing')}
-            className="text-sm text-gray-400 hover:text-gray-200"
-          >
-            Pricing
-          </Link>
-        </div>
-
-        {/* sign in */}
-        <AuthLinks />
-      </nav>
-    </header>
-  );
+					<div className="flex items-center gap-3">
+						<SignedOut>
+							<SignInButton mode="modal">
+								<button className="rounded-md bg-gradient-to-r from-red-600 to-rose-700 px-3 py-1 text-sm font-medium text-white/95 shadow-sm hover:brightness-110">
+									Sign in
+								</button>
+							</SignInButton>
+						</SignedOut>
+						<SignedIn>
+							<div className="hidden md:block">
+								<UserButton afterSignOutUrl="/" />
+							</div>
+						</SignedIn>
+					</div>
+				</div>
+			</div>
+		</header>
+	);
 }
+
